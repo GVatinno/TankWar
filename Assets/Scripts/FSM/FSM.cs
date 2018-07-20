@@ -72,7 +72,8 @@ public class FSM<T>
     public void ChangeState(IState<T> newState)
     {
         mPreviousState = mCurrentState;
-        mCurrentState.Exit(owner);
+		if ( mCurrentState != null )
+			mCurrentState.Exit(owner);
         mCurrentState = newState;
         mCurrentState.Enter(owner);
     }

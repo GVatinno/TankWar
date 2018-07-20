@@ -437,6 +437,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 1
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -447,13 +448,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 282840810}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.8, y: 45.21, z: 8.3}
+  m_LocalRotation: {x: 0.4430712, y: 0, z: 0, w: 0.89648646}
+  m_LocalPosition: {x: 1.8, y: 12.95, z: -8.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 52.6, y: 0, z: 0}
 --- !u!1 &358926321
 GameObject:
   m_ObjectHideFlags: 0
@@ -3050,6 +3051,16 @@ Prefab:
     - target: {fileID: 4463565906834920, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 54968131349844130, guid: b08f5ae45538c45f9bfb4cb6ca6c3697,
+        type: 2}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 54968131349844130, guid: b08f5ae45538c45f9bfb4cb6ca6c3697,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 112
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}

@@ -9,12 +9,16 @@ public class Tank : MonoBehaviour
 {
 	private TankTurret mTurret = null;
 	private Rigidbody mRb = null;
+	private NavMeshPath mMovingPath = null;
+	private float mSlowingDownRadius = 1.0f;
+	private float mTankSpeed = 2.0f;
 
 	void Awake()
 	{
 		EnemyManager.Instance.RegisterEnemy(this);
 		mTurret = GetComponentInChildren<TankTurret>();
 		mRb = GetComponent<Rigidbody>();
+		mMovingPath = new NavMeshPath();
 	}
 
 	private void OnDestroy()
@@ -34,62 +38,82 @@ public class Tank : MonoBehaviour
 
 	public void MoveTo(Vector3 position)
 	{
-		NavMeshPath path = new NavMeshPath();
-		NavMesh.CalculatePath(this.transform.position, position, NavMesh.AllAreas, path);
-		if (path != null && path.corners.Length > 0)
+		NavMesh.CalculatePath(this.transform.position, position, NavMesh.AllAreas, mMovingPath);
+		if (mMovingPath != null && mMovingPath.corners.Length > 1)
 		{
-			StopCoroutine(Moving(path));
-			StartCoroutine(Moving(path));
+			//StopCoroutine(Moving());
+			StopAllCoroutines ();
+			StartCoroutine(Moving());
 		}
 
 		
 	}
 
-	IEnumerator Moving(NavMeshPath path)
+	IEnumerator Moving()
 	{
-		int index = 0;
-		while( index < path.corners.Length )
+		int index = 1;
+		while( index < mMovingPath.corners.Length )
 		{
-			//yield return StartCoroutine( ReorientTank(path.corners[index]) );
-			Vector3 direction = (path.corners[index] - this.transform.position).normalized;
+			yield return StartCoroutine( ReorientTank(index) );
 			while (true)
 			{
-				float distance = (path.corners[index] - this.transform.position).sqrMagnitude;
-				if (distance >= 0.1f)
+				Vector3 direction = (mMovingPath.corners[index] - this.transform.position).normalized;
+				float distance = (mMovingPath.corners[index] - this.transform.position).sqrMagnitude;
+				if (distance > mSlowingDownRadius)
 				{
-					mRb.velocity = direction * 2f * Mathf.Min(1.0f, distance);
-					MessageBus.Instance.TankPositionIsChanging(this);
+					mRb.MovePosition(this.transform.position + direction * mTankSpeed * Time.deltaTime);
 					yield return new WaitForFixedUpdate();
 				}
-				else
+				else 
 				{
-					++index;
-					break;
+					if (distance < mSlowingDownRadius * 0.08f) {
+						break;
+					}
+					mRb.MovePosition(this.transform.position + direction * mTankSpeed *  distance / mSlowingDownRadius * Time.deltaTime);
+					yield return new WaitForFixedUpdate();
 				}
+
 			}
+			index = index + 1;
+			yield return new WaitForFixedUpdate();
 		}
+		MessageBus.Instance.TankReachedPosition (this);
 	}
 
-	IEnumerator ReorientTank(Vector3 targetPosition)
+	IEnumerator ReorientTank(int index)
 	{
 		while (true)
 		{
-			Vector3 toTarget = (targetPosition - this.transform.position).normalized;
-			float dot = Vector3.Dot(toTarget, this.transform.right);
-			if ( dot < -Mathf.Epsilon || dot > Mathf.Epsilon)
-			{
-				mRb.AddTorque(Vector3.up * Time.deltaTime * Mathf.Sign(dot) * 10.0f);
-				MessageBus.Instance.TankPositionIsChanging(this);
-				yield return new WaitForFixedUpdate();
+			if (IsReorientingNeeded (mMovingPath.corners [index])) {
+				Vector3 toTarget = (mMovingPath.corners [index] - this.transform.position).normalized;
+				mRb.MoveRotation (Quaternion.Slerp (this.transform.rotation, Quaternion.LookRotation (toTarget), Time.deltaTime));
+				yield return null;
 			}
-			else
-			{
+			else {
 				break;
 			}
 		}
 
+	}
 
-		
+	bool IsReorientingNeeded(Vector3 target)
+	{
+		Vector3 toTarget = (target - this.transform.position).normalized;
+		float dot = Vector3.Dot(toTarget, this.transform.forward);
+		return dot < 0.99f;
+	}
+
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.black;
+		if (mMovingPath != null ) 
+		{
+			foreach (var c in mMovingPath.corners) 
+			{
+				Gizmos.DrawWireCube (c, Vector3.one * 0.3f);
+				Gizmos.DrawWireSphere(c, mSlowingDownRadius);
+			}
+		}
 	}
 
 }

@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class AiTankController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+	private Tank mTank = null;
+	private FSM<Tank> mFSM = null;
+
+	void Awake()
+	{
+		mTank = GetComponent<Tank>();
+		mFSM = new FSM<Tank>(mTank);
+		mFSM.GlobalState = new AITankGlobalState();
+		mFSM.ChangeState(new AITankMoveState());
 	}
-	
-	// Update is called once per frame
+
+	void Start () {
+
+	}
+
+
 	void Update () {
-		
+		mFSM.Update();
 	}
 }

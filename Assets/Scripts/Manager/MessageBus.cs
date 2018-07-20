@@ -5,5 +5,5 @@ using System.Collections.Generic;
 
 public class MessageBus : Singleton<MessageBus>
 {
-    public Action<Tank> TankPositionIsChanging = delegate {  };
+    public Action<Tank> TankReachedPosition = delegate {  };
 }
