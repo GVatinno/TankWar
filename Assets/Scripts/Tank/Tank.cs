@@ -31,9 +31,35 @@ public class Tank : MonoBehaviour
 		mTurret.SetCurrentTarget(EnemyManager.Instance.GetEnemyTargetFromEnemy(this));
 	}
 
-	void Update()
+
+	public void ResetAim()
 	{
-		
+		mTurret.ResetAim ();
+	}
+
+	public void ResetPower()
+	{
+		mTurret.ResetPower ();
+	}
+
+	public void IncreaseAim()
+	{
+		mTurret.IncreaseAim ();
+	}
+
+	public void DecreaseAim()
+	{
+		mTurret.DecreaseAim ();
+	}
+
+	public void ChangePower()
+	{
+		mTurret.ChangePower ();
+	}
+
+	public void Shoot()
+	{
+		mTurret.Shoot ();
 	}
 
 	public void MoveTo(Vector3 position)
@@ -41,12 +67,9 @@ public class Tank : MonoBehaviour
 		NavMesh.CalculatePath(this.transform.position, position, NavMesh.AllAreas, mMovingPath);
 		if (mMovingPath != null && mMovingPath.corners.Length > 1)
 		{
-			//StopCoroutine(Moving());
 			StopAllCoroutines ();
 			StartCoroutine(Moving());
 		}
-
-		
 	}
 
 	IEnumerator Moving()

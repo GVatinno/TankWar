@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class AiTankController : MonoBehaviour {
 
-	private Tank mTank = null;
-	private FSM<Tank> mFSM = null;
+	[HideInInspector]
+	public Tank mTank = null;
+	[HideInInspector]
+	public FSM<AiTankController> mFSM = null;
 
 	void Awake()
 	{
 		mTank = GetComponent<Tank>();
-		mFSM = new FSM<Tank>(mTank);
+		mFSM = new FSM<AiTankController>(this);
 		mFSM.GlobalState = new AITankGlobalState();
-		mFSM.ChangeState(new AITankMoveState());
+		mFSM.ChangeState(new AITankIdleState());
 	}
 
 	void Start () {

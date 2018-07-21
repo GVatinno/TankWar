@@ -1,75 +1,85 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class AITankGlobalState : IState<Tank>
+public class AITankGlobalState : IState<AiTankController>
 {
-	public override void Enter(Tank agent)
+	public override void Enter(AiTankController agent)
 	{
 		// respond to events
 	}
 
-	public override void Execute(Tank agent)
+	public override void Execute(AiTankController agent)
 	{
 	}
 
 
-	public override void Exit(Tank agent)
-	{
-	}
-}
-
-
-public class AITankIdleState : IState<Tank>
-{
-	public override void Enter(Tank agent)
-	{
-	}
-
-	public override void Execute(Tank agent)
-	{
-	}
-
-	public override void Exit(Tank agent)
+	public override void Exit(AiTankController agent)
 	{
 	}
 }
+	
 
-public class AITankMoveState : IState<Tank>
+public class AITankIdleState : IState<AiTankController>
 {
-	private bool mFoundTargetPosition = false;
-	private Tank mTank = null;
+	AiTankController mTankController = null;
 
-	public override void Enter(Tank agent)
+	public override void Enter(AiTankController agent)
 	{
-		mFoundTargetPosition = false;
-		mTank = agent;
+		mTankController = agent;
+		MessageBus.Instance.StartPositioning += OnStartPositioning;
+	}
+
+	public override void Execute(AiTankController agent)
+	{
+	}
+
+	public override void Exit(AiTankController agent)
+	{
+		MessageBus.Instance.StartPositioning -= OnStartPositioning;
+	}
+
+	private void OnStartPositioning()
+	{
+		mTankController.mFSM.ChangeState (new AITankMoveState());
+	}
+}
+
+public class AITankMoveState : IState<AiTankController>
+{
+	private AiTankController mTankController = null;
+	private bool mIsMoving = false;
+
+	public override void Enter(AiTankController agent)
+	{
+		mTankController = agent;
+		mIsMoving = false;
 		MessageBus.Instance.TankReachedPosition += OnTankReachedPosition;
 	}
-
-	void OnTankReachedPosition(Tank tank)	{
-		if (tank == mTank) {
-			mFoundTargetPosition = false;
+		
+	public override void Execute(AiTankController agent)
+	{
+		if (mIsMoving)
+			return;
+		Vector2 circlePoint = Random.insideUnitCircle * 10.0f;
+		Vector3 samplePoint = new Vector3 ( circlePoint.x, 0.0f, circlePoint.y );
+		NavMeshHit navHit;
+		if ( NavMesh.SamplePosition(samplePoint, out navHit, float.MaxValue, NavMesh.AllAreas) )
+		{
+			mIsMoving = true;
+			agent.mTank.MoveTo(navHit.position);
 		}
 	}
 
-	public override void Execute(Tank agent)
+	public override void Exit(AiTankController agent)
 	{
-		if (! mFoundTargetPosition) {
-			Vector2 circlePoint = Random.insideUnitCircle * 10.0f;
-			Vector3 samplePoint = new Vector3 ( circlePoint.x, 0.0f, circlePoint.y );
-			NavMeshHit navHit;
-			if ( NavMesh.SamplePosition(samplePoint, out navHit, float.MaxValue, NavMesh.AllAreas) )
-			{
-				mFoundTargetPosition = true;
-				agent.MoveTo(navHit.position);
-			}
-		}
-
-	}
-
-	public override void Exit(Tank agent)
-	{
-		mTank = null;
 		MessageBus.Instance.TankReachedPosition -= OnTankReachedPosition;
+	}
+		
+	void OnTankReachedPosition(Tank tank)	
+	{
+		if (tank == mTankController.mTank) 
+		{
+			mTankController.mFSM.ChangeState (new AITankIdleState ());
+		}
 	}
 }

@@ -123,7 +123,6 @@ GameObject:
   - component: {fileID: 162296643}
   - component: {fileID: 162296642}
   - component: {fileID: 162296641}
-  - component: {fileID: 162296640}
   - component: {fileID: 162296644}
   m_Layer: 9
   m_Name: Rocks (5)
@@ -132,18 +131,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &162296640
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 162296639}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &162296641
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -290,7 +277,6 @@ GameObject:
   - component: {fileID: 228654468}
   - component: {fileID: 228654467}
   - component: {fileID: 228654466}
-  - component: {fileID: 228654465}
   - component: {fileID: 228654469}
   m_Layer: 9
   m_Name: Rocks (3)
@@ -299,18 +285,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &228654465
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 228654464}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &228654466
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -491,7 +465,7 @@ Transform:
   - {fileID: 599395093}
   - {fileID: 961406014}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &388646203
 GameObject:
@@ -1175,7 +1149,6 @@ GameObject:
   - component: {fileID: 599395093}
   - component: {fileID: 599395092}
   - component: {fileID: 599395091}
-  - component: {fileID: 599395090}
   - component: {fileID: 599395094}
   m_Layer: 9
   m_Name: Rocks (8)
@@ -1184,18 +1157,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &599395090
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 599395089}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &599395091
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1267,6 +1228,48 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1001 &725689708
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4694226495445964, guid: 5cd96e2270b933842bc0b5797fe1e013, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694226495445964, guid: 5cd96e2270b933842bc0b5797fe1e013, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694226495445964, guid: 5cd96e2270b933842bc0b5797fe1e013, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694226495445964, guid: 5cd96e2270b933842bc0b5797fe1e013, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694226495445964, guid: 5cd96e2270b933842bc0b5797fe1e013, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694226495445964, guid: 5cd96e2270b933842bc0b5797fe1e013, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694226495445964, guid: 5cd96e2270b933842bc0b5797fe1e013, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694226495445964, guid: 5cd96e2270b933842bc0b5797fe1e013, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 5cd96e2270b933842bc0b5797fe1e013, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &730243258
 GameObject:
   m_ObjectHideFlags: 0
@@ -1277,7 +1280,6 @@ GameObject:
   - component: {fileID: 730243262}
   - component: {fileID: 730243261}
   - component: {fileID: 730243260}
-  - component: {fileID: 730243259}
   - component: {fileID: 730243263}
   m_Layer: 9
   m_Name: Rocks (2)
@@ -1286,18 +1288,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &730243259
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 730243258}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &730243260
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1463,7 +1453,6 @@ GameObject:
   - component: {fileID: 961406014}
   - component: {fileID: 961406013}
   - component: {fileID: 961406012}
-  - component: {fileID: 961406011}
   - component: {fileID: 961406015}
   m_Layer: 9
   m_Name: Rocks (9)
@@ -1472,18 +1461,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &961406011
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 961406010}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &961406012
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1733,7 +1710,6 @@ GameObject:
   - component: {fileID: 1013211042}
   - component: {fileID: 1013211041}
   - component: {fileID: 1013211040}
-  - component: {fileID: 1013211039}
   - component: {fileID: 1013211043}
   m_Layer: 9
   m_Name: Rocks (6)
@@ -1742,18 +1718,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &1013211039
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1013211038}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1013211040
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2171,7 +2135,6 @@ GameObject:
   - component: {fileID: 1339917934}
   - component: {fileID: 1339917933}
   - component: {fileID: 1339917932}
-  - component: {fileID: 1339917931}
   - component: {fileID: 1339917935}
   m_Layer: 9
   m_Name: Rocks (7)
@@ -2180,18 +2143,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &1339917931
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1339917930}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1339917932
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2263,48 +2214,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!1001 &1377498396
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4609696941541000, guid: d5656f5ff14b2433b8aadc46bdbd2dc7, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4609696941541000, guid: d5656f5ff14b2433b8aadc46bdbd2dc7, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4609696941541000, guid: d5656f5ff14b2433b8aadc46bdbd2dc7, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4609696941541000, guid: d5656f5ff14b2433b8aadc46bdbd2dc7, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4609696941541000, guid: d5656f5ff14b2433b8aadc46bdbd2dc7, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4609696941541000, guid: d5656f5ff14b2433b8aadc46bdbd2dc7, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4609696941541000, guid: d5656f5ff14b2433b8aadc46bdbd2dc7, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4609696941541000, guid: d5656f5ff14b2433b8aadc46bdbd2dc7, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: d5656f5ff14b2433b8aadc46bdbd2dc7, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1501369396
 GameObject:
   m_ObjectHideFlags: 0
@@ -2735,7 +2644,6 @@ GameObject:
   - component: {fileID: 1876203973}
   - component: {fileID: 1876203972}
   - component: {fileID: 1876203971}
-  - component: {fileID: 1876203970}
   - component: {fileID: 1876203974}
   m_Layer: 9
   m_Name: Rocks
@@ -2744,18 +2652,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &1876203970
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1876203969}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1876203971
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2921,7 +2817,6 @@ GameObject:
   - component: {fileID: 1986279793}
   - component: {fileID: 1986279792}
   - component: {fileID: 1986279791}
-  - component: {fileID: 1986279790}
   - component: {fileID: 1986279794}
   m_Layer: 9
   m_Name: Rocks (4)
@@ -2930,18 +2825,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &1986279790
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1986279789}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1986279791
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3013,58 +2896,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!1001 &2023082969
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4463565906834920, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -3.94
-      objectReference: {fileID: 0}
-    - target: {fileID: 4463565906834920, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4463565906834920, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4463565906834920, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4463565906834920, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4463565906834920, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4463565906834920, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4463565906834920, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 54968131349844130, guid: b08f5ae45538c45f9bfb4cb6ca6c3697,
-        type: 2}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 54968131349844130, guid: b08f5ae45538c45f9bfb4cb6ca6c3697,
-        type: 2}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: b08f5ae45538c45f9bfb4cb6ca6c3697, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &2137415347
 GameObject:
   m_ObjectHideFlags: 0
@@ -3075,7 +2906,6 @@ GameObject:
   - component: {fileID: 2137415351}
   - component: {fileID: 2137415350}
   - component: {fileID: 2137415349}
-  - component: {fileID: 2137415348}
   - component: {fileID: 2137415352}
   m_Layer: 9
   m_Name: Rocks (1)
@@ -3084,18 +2914,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &2137415348
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2137415347}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2137415349
 MeshRenderer:
   m_ObjectHideFlags: 0

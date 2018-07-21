@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 389074822046161418716d2855aa9177, type: 3}
+  m_Name: TurnBasedGameModeData
+  m_EditorClassIdentifier: 
+  AiTank: {fileID: 114408276397387372, guid: d5656f5ff14b2433b8aadc46bdbd2dc7, type: 2}
+  PlayerTank: {fileID: 114076837838353142, guid: b08f5ae45538c45f9bfb4cb6ca6c3697,
+    type: 2}
+  Spawners:
+  - {x: 0, y: 0, z: 0}
+  - {x: 10, y: 0, z: 0}

@@ -20,7 +20,16 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         return mTanks.Find( o => o != tank);
     }
+		
+	public Tank GetPlayerTank()
+	{
+		return mTanks.Find( o => o.CompareTag("Player"));
+	}
 
+	public Tank GetAiTank()
+	{
+		return mTanks.Find( o => o.CompareTag("Ai"));
+	}
 
 
 }
