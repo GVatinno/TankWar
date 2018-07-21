@@ -27,7 +27,8 @@ public class AITankIdleState : IState<AiTankController>
 	{
 		mTankController = agent;
 		MessageBus.Instance.StartPositioning += OnStartPositioning;
-	}
+        MessageBus.Instance.StartTankAttack += OnStartTankAttack;
+    }
 
 	public override void Execute(AiTankController agent)
 	{
@@ -36,9 +37,18 @@ public class AITankIdleState : IState<AiTankController>
 	public override void Exit(AiTankController agent)
 	{
 		MessageBus.Instance.StartPositioning -= OnStartPositioning;
-	}
+        MessageBus.Instance.StartTankAttack -= OnStartTankAttack;
+    }
 
-	private void OnStartPositioning()
+    private void OnStartTankAttack(Tank tank)
+    {
+        if (mTankController.mTank == tank)
+        {
+            mTankController.mFSM.ChangeState(new AiTankAttackState());
+        }
+    }
+
+    private void OnStartPositioning()
 	{
 		mTankController.mFSM.ChangeState (new AITankMoveState());
 	}
@@ -82,4 +92,59 @@ public class AITankMoveState : IState<AiTankController>
 			mTankController.mFSM.ChangeState (new AITankIdleState ());
 		}
 	}
+}
+
+
+public class AiTankAttackState : IState<AiTankController>
+{
+    AiTankController mTankController = null;
+    float mLastAim = 0.0f;
+    float mLastPower = 0.0f;
+    StrategyType mLastStrategy = StrategyType.IncreasePower;
+    bool mHasShoot = false;
+
+    public override void Enter(AiTankController agent)
+    {
+        MessageBus.Instance.TankAttackFinishing += OnTankAttackFinishing;
+        mTankController = agent;
+        mTankController.mTank.ResetAim();
+        mTankController.mTank.ResetPower();
+        if (mTankController.mStrategy.Empty())
+        {
+            mLastStrategy = mTankController.mStrategy.GetRandomStrategy(out mLastAim, out mLastPower);
+        }
+        else
+        {
+            mLastStrategy = mTankController.mStrategy.GetNextStrategy(out mLastAim, out mLastPower);   
+        }
+        mTankController.mTank.SetAim(mLastAim);
+        mTankController.mTank.SetPower(mLastPower);
+        mHasShoot = false;
+    }
+
+    public override void Execute(AiTankController agent)
+    {
+        if (!mHasShoot)
+        {
+            Debug.Log("----------------------------------------------");
+            Debug.Log(mLastStrategy);
+            mTankController.mTank.Shoot();
+            mHasShoot = true;
+        }  
+    }
+
+    public override void Exit(AiTankController agent)
+    {
+        MessageBus.Instance.TankAttackFinishing -= OnTankAttackFinishing;
+    }
+
+    void OnTankAttackFinishing(Tank tank, float distanceFromTarget)
+    {
+        if (mTankController.mTank == tank)
+        {
+            Debug.Log("AI result " + distanceFromTarget);
+            mTankController.mStrategy.ImproveStrategy(distanceFromTarget, mLastAim, mLastPower, mLastStrategy);
+            mTankController.mFSM.ChangeState(new AITankIdleState());
+        }
+    }
 }

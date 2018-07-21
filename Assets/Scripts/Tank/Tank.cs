@@ -7,7 +7,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Rigidbody))]
 public class Tank : MonoBehaviour
 {
-	private TankTurret mTurret = null;
+    [SerializeField]
+    public TankData mData = null;
+    private TankTurret mTurret = null;
 	private Rigidbody mRb = null;
 	private NavMeshPath mMovingPath = null;
 	private float mSlowingDownRadius = 1.0f;
@@ -31,6 +33,15 @@ public class Tank : MonoBehaviour
 		mTurret.SetCurrentTarget(EnemyManager.Instance.GetEnemyTargetFromEnemy(this));
 	}
 
+    public void SetAim(float aim)
+    {
+        mTurret.SetAim(aim);
+    }
+
+    public void SetPower(float power)
+    {
+        mTurret.SetPower(power);
+    } 
 
 	public void ResetAim()
 	{

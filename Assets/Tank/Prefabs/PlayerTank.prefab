@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 82111729374557240}
   m_Layer: 10
   m_Name: Tower
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -365,6 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e69a6269397d4ed4b9cf949b4f92600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mData: {fileID: 11400000, guid: 6775faac826e2cc40bc8b5aaab54a0a7, type: 2}
 --- !u!114 &114409801639257320
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -379,6 +380,7 @@ MonoBehaviour:
   mShellPrefab: {fileID: 114124756684526384, guid: 53b6a06a09cfffc40aba56bbe4cad1fe,
     type: 2}
   mShellSource: {fileID: 1405403612154818}
+  mData: {fileID: 11400000, guid: 6775faac826e2cc40bc8b5aaab54a0a7, type: 2}
 --- !u!114 &114801980826438686
 MonoBehaviour:
   m_ObjectHideFlags: 1

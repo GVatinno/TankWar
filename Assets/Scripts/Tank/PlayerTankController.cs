@@ -7,9 +7,10 @@ using UnityEngine;
 public class PlayerTankController : MonoBehaviour
 {
 
-
+    [HideInInspector]
 	public Tank mTank = null;
-	public FSM<PlayerTankController> mFSM = null;
+    [HideInInspector]
+    public FSM<PlayerTankController> mFSM = null;
 	
 	void Awake()
 	{

@@ -116,12 +116,12 @@ public class PlayerAttackState : IState<PlayerTankController>
 	{
 		if ( Input.GetKey(KeyCode.UpArrow) )
 		{
-			mTankController.mTank.DecreaseAim ();
+			mTankController.mTank.IncreaseAim();
 		}
 
 		if ( Input.GetKey(KeyCode.DownArrow) )
 		{
-			mTankController.mTank.IncreaseAim();
+			mTankController.mTank.DecreaseAim();
 		}
 
 		if (Input.GetKey (KeyCode.Space) ) 
@@ -132,7 +132,7 @@ public class PlayerAttackState : IState<PlayerTankController>
 		if (Input.GetKeyUp (KeyCode.Space)) 
 		{
 			mTankController.mTank.Shoot();
-			//mTankController.mFSM.ChangeState (new PlayerIdleState ());
+			mTankController.mFSM.ChangeState (new PlayerIdleState ());
 		}
 
 	}

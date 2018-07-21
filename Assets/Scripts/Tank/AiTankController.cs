@@ -8,14 +8,17 @@ public class AiTankController : MonoBehaviour {
 	public Tank mTank = null;
 	[HideInInspector]
 	public FSM<AiTankController> mFSM = null;
+    public AiTankStrategy mStrategy = null;
 
-	void Awake()
+    void Awake()
 	{
 		mTank = GetComponent<Tank>();
 		mFSM = new FSM<AiTankController>(this);
 		mFSM.GlobalState = new AITankGlobalState();
 		mFSM.ChangeState(new AITankIdleState());
-	}
+        mStrategy = new AiTankStrategy(mTank.mData);
+
+    }
 
 	void Start () {
 

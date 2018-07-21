@@ -7,6 +7,7 @@ public class Shell : MonoBehaviour {
 	private Rigidbody mRb = null;
 	private Tank mOwner = null;
 	private TrailRenderer mTrailRenderer = null;
+    private Tank mTarget = null;
 
 	void Awake()
 	{
@@ -20,13 +21,15 @@ public class Shell : MonoBehaviour {
 		
 	}
 
-	public void Shoot(Vector3 position, Vector3 force, Tank owner)
+	public void Shoot(Vector3 position, Vector3 force, Tank owner, Tank target)
 	{
 		mOwner = owner;
-		mRb.gameObject.transform.position = position;
+        mTarget = target;
+
+        mRb.gameObject.transform.position = position;
 		mRb.gameObject.transform.rotation = Quaternion.LookRotation (force.normalized);
-		mRb.position = position;
-		mRb.rotation = Quaternion.LookRotation (force.normalized);
+		mRb.velocity = Vector3.zero;
+		mRb.angularVelocity = Vector3.zero;
 		mRb.isKinematic = false;
 		mRb.AddForce (force, ForceMode.Impulse);
 		mTrailRenderer = GetComponent<TrailRenderer> ();
@@ -37,6 +40,8 @@ public class Shell : MonoBehaviour {
 	void OnTriggerEnter(Collider other)
 	{
 		Destroy (this.gameObject);
-		// put the pool here
-	}
+        MessageBus.Instance.TankAttackFinishing(mOwner, (other.ClosestPointOnBounds(transform.position) - mTarget.transform.position).sqrMagnitude);
+        MessageBus.Instance.TankAttackFinished(mOwner);
+
+    }
 }

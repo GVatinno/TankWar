@@ -78,7 +78,8 @@ public class TurnBasedGameModeAttackState : IState<TurnBasedGameMode>
 	public override void Enter(TurnBasedGameMode agent)
 	{
 		MessageBus.Instance.StartTankAttack (EnemyManager.Instance.GetPlayerTank ());
-	}
+        MessageBus.Instance.TankAttackFinished += OnTankAttackFinished;
+    }
 
 	public override void Execute(TurnBasedGameMode agent)
 	{
@@ -87,4 +88,16 @@ public class TurnBasedGameModeAttackState : IState<TurnBasedGameMode>
 	public override void Exit(TurnBasedGameMode agent)
 	{
 	}
+
+    private void OnTankAttackFinished( Tank tank )
+    {
+        if (tank.CompareTag("Player"))
+        {
+            MessageBus.Instance.StartTankAttack(EnemyManager.Instance.GetAiTank());
+        }
+        else
+        {
+            MessageBus.Instance.StartTankAttack(EnemyManager.Instance.GetPlayerTank());
+        }
+    }
 }
