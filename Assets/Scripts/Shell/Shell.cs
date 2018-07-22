@@ -9,12 +9,12 @@ public class Shell : MonoBehaviour {
 	private TrailRenderer mTrailRenderer = null;
     private Tank mTarget = null;
 
-	void Awake()
+    void Awake()
 	{
 		mRb = GetComponent<Rigidbody> ();
 		mOwner = null;
 		mTrailRenderer = GetComponent<TrailRenderer> ();
-	}
+    }
 
 	void Start () 
 	{
@@ -39,9 +39,26 @@ public class Shell : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		Destroy (this.gameObject);
-        MessageBus.Instance.TankAttackFinishing(mOwner, (other.ClosestPointOnBounds(transform.position) - mTarget.transform.position).sqrMagnitude);
+		 // TODO USE POOL
+        MessageBus.Instance.TankAttackFinishing(mOwner, ComputeSignedDistance(other.ClosestPointOnBounds(transform.position)));
+        if ( other.gameObject.layer == Utils.LayerTank)
+        {
+            MessageBus.Instance.TankDestroyed(other.GetComponent<Tank>());
+            // TODO CREATE A POOL POOL OBJECT FOR THIS SOUND
+        }
         MessageBus.Instance.TankAttackFinished(mOwner);
-
+        Destroy(this.gameObject);
     }
+
+    
+    float ComputeSignedDistance(Vector3 collisionPoint)
+    {
+        // negative if before the thank, positive if after ( from the other tank perspective )
+        collisionPoint.y = mTarget.transform.position.y;
+        Vector3 planeNormal = (mTarget.transform.position - mOwner.transform.position).normalized;
+        float signedDistance =  Vector3.Dot(collisionPoint - mTarget.transform.position, planeNormal);
+        // TODO TEST IF IT'S EQUAL SQRDISTANCE SO NO NORMALIZATION
+        return signedDistance;
+    }
+
 }

@@ -100,7 +100,6 @@ public class AiTankAttackState : IState<AiTankController>
     AiTankController mTankController = null;
     float mLastAim = 0.0f;
     float mLastPower = 0.0f;
-    StrategyType mLastStrategy = StrategyType.IncreasePower;
     bool mHasShoot = false;
 
     public override void Enter(AiTankController agent)
@@ -109,14 +108,7 @@ public class AiTankAttackState : IState<AiTankController>
         mTankController = agent;
         mTankController.mTank.ResetAim();
         mTankController.mTank.ResetPower();
-        if (mTankController.mStrategy.Empty())
-        {
-            mLastStrategy = mTankController.mStrategy.GetRandomStrategy(out mLastAim, out mLastPower);
-        }
-        else
-        {
-            mLastStrategy = mTankController.mStrategy.GetNextStrategy(out mLastAim, out mLastPower);   
-        }
+        mTankController.mStrategy.GetNextStrategy(out mLastAim, out mLastPower);
         mTankController.mTank.SetAim(mLastAim);
         mTankController.mTank.SetPower(mLastPower);
         mHasShoot = false;
@@ -127,7 +119,6 @@ public class AiTankAttackState : IState<AiTankController>
         if (!mHasShoot)
         {
             Debug.Log("----------------------------------------------");
-            Debug.Log(mLastStrategy);
             mTankController.mTank.Shoot();
             mHasShoot = true;
         }  
@@ -143,7 +134,7 @@ public class AiTankAttackState : IState<AiTankController>
         if (mTankController.mTank == tank)
         {
             Debug.Log("AI result " + distanceFromTarget);
-            mTankController.mStrategy.ImproveStrategy(distanceFromTarget, mLastAim, mLastPower, mLastStrategy);
+            mTankController.mStrategy.ImproveStrategy(distanceFromTarget, mLastAim, mLastPower);
             mTankController.mFSM.ChangeState(new AITankIdleState());
         }
     }

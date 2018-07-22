@@ -75,10 +75,14 @@ public class PositioningStateGameModeState : IState<TurnBasedGameMode>
 
 public class TurnBasedGameModeAttackState : IState<TurnBasedGameMode>
 {
-	public override void Enter(TurnBasedGameMode agent)
+    TurnBasedGameMode mGameMode = null;
+
+    public override void Enter(TurnBasedGameMode agent)
 	{
-		MessageBus.Instance.StartTankAttack (EnemyManager.Instance.GetPlayerTank ());
+        mGameMode = agent;
+        MessageBus.Instance.StartTankAttack (EnemyManager.Instance.GetPlayerTank ());
         MessageBus.Instance.TankAttackFinished += OnTankAttackFinished;
+        MessageBus.Instance.TankDestroyed += OnTankDestroyed;
     }
 
 	public override void Execute(TurnBasedGameMode agent)
@@ -87,7 +91,9 @@ public class TurnBasedGameModeAttackState : IState<TurnBasedGameMode>
 
 	public override void Exit(TurnBasedGameMode agent)
 	{
-	}
+        MessageBus.Instance.TankAttackFinished -= OnTankAttackFinished;
+        MessageBus.Instance.TankDestroyed -= OnTankDestroyed;
+    }
 
     private void OnTankAttackFinished( Tank tank )
     {
@@ -98,6 +104,46 @@ public class TurnBasedGameModeAttackState : IState<TurnBasedGameMode>
         else
         {
             MessageBus.Instance.StartTankAttack(EnemyManager.Instance.GetPlayerTank());
+        }
+    }
+
+    private void OnTankDestroyed( Tank tank )
+    {
+        GameObject.Destroy(tank.gameObject);
+        mGameMode.mFSM.ChangeState(new EndOfGameModeState());
+    }
+}
+
+
+public class EndOfGameModeState : IState<TurnBasedGameMode>
+{
+    float timePassed = 0.0f;
+
+    public override void Enter(TurnBasedGameMode agent)
+    {
+        timePassed = 0.0f;
+    }
+
+    public override void Execute(TurnBasedGameMode agent)
+    {
+        if (timePassed > 4.0f)
+        {
+            DestroyAllTanks();
+            agent.mFSM.ChangeState(new TurnBasedGameModeOpeningState());
+        }
+        timePassed += Time.deltaTime;
+    }
+
+    public override void Exit(TurnBasedGameMode agent)
+    {
+    }
+
+    private void DestroyAllTanks()
+    {
+        List<Tank> tanks = EnemyManager.Instance.GetAllEnemies();
+        foreach (Tank t in tanks)
+        {
+            GameObject.DestroyImmediate(t.gameObject);
         }
     }
 }

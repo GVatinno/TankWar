@@ -94,7 +94,7 @@ public class TankTurret : MonoBehaviour
 	{
 		mCannonAudioSource.Play ();
         if ( mThisTank.tag == "Ai" )
-            Debug.Log("tank " + this.gameObject.tag +"power " + mPower + " aim " + mAim );
+            Debug.Log("tank " + this.gameObject.tag + " aim " + mAim + " power " + mPower );
         Shell shell = Instantiate<Shell> (mShellPrefab);
 		shell.Shoot (mShellSource.transform.position, mShellSource.transform.forward * mPower * mData.mPowerMultiplier, mThisTank, mCurrentTarget);
 		ResetPower ();

@@ -1,35 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum StrategyType : int
-{
-    IncreaseAim = 1,
-    DecreaseAim = 2,
-    IncreasePower = 3,
-    DecreasePower = 4
-}
+using System.Linq;
 
 public class Node
 {
-    public Node( float distance, float aim, float power, StrategyType strategy, Node rhs, Node lhs, Node mPreviousNode)
+    public Node( float distance, float aim, float power )
     {
         mSqrdDistanceFromTarget = distance;
         mAim = aim;
         mPower = power;
-        mStrategy = strategy;
-        mLhs = lhs;
-        mRhs = rhs;
-        mPreviousNode = null;
     }
 
     public float mSqrdDistanceFromTarget;
     public float mAim;
     public float mPower;
-    public StrategyType mStrategy;
-    public Node mRhs;
-    public Node mLhs;
-    public Node mPreviousNode;
 }
 
 public class AiTankStrategy
@@ -37,185 +22,96 @@ public class AiTankStrategy
     public AiTankStrategy(TankData data)
     {
         mTankData = data;
+        mOrderedNodes = new List<Node>();
     }
 
-    Node mRoot = null;
-    Node mLastNode = null;
     TankData mTankData = null;
+    List<Node> mOrderedNodes = null;
+    int mBestShotIndex = -1;
 
 
-    public bool Empty()
+    private int FindBestShotIndex()
     {
-        return mRoot == null;
+        int best = 0;
+        for ( int i = 1; i < mOrderedNodes.Count; ++i)
+        {
+            if ( Mathf.Abs(mOrderedNodes[best].mSqrdDistanceFromTarget) > Mathf.Abs(mOrderedNodes[i].mSqrdDistanceFromTarget))
+            {
+                best = i;
+            }
+        }
+        return best;
     }
 
-
-    public void ImproveStrategy(float distance, float aim, float power, StrategyType strategy)
+    public void ImproveStrategy( float distanceFromTarget, float aim, float power)
     {
-        Node nodeToCreate = null;
-        if (mRoot == null)
+        if (mOrderedNodes.Count == 0)
         {
-            nodeToCreate = new Node(distance, aim, power, strategy, null, null, mLastNode);
-            mRoot = nodeToCreate;
+            mOrderedNodes.Add(new Node(distanceFromTarget, aim, power));
+            mBestShotIndex = 0;
         }
         else
         {
-            nodeToCreate = InsertRecursively(mRoot, distance, aim, power, strategy);
+            mOrderedNodes.Add(new Node(distanceFromTarget, aim, power));
+            mOrderedNodes = mOrderedNodes.OrderBy(o => o.mSqrdDistanceFromTarget).ToList();
+            mBestShotIndex = FindBestShotIndex();
         }
-        mLastNode = nodeToCreate;
+
+        Debug.Log("BEST SHOIT aim" + mOrderedNodes[mBestShotIndex].mAim + "power" + mOrderedNodes[mBestShotIndex].mPower);
     }
 
-    Node InsertRecursively(Node parent, float distance, float aim, float power, StrategyType strategy)
+    public void GetNextStrategy(out float aim, out float power)
     {
-        Node newNode = null;
-        if (distance <= parent.mSqrdDistanceFromTarget)
+        if (Empty())
         {
-            if (parent.mLhs == null)
+            GetRandomStrategy(out aim, out power);
+            return;
+        }
+
+
+        if (mOrderedNodes[mBestShotIndex].mSqrdDistanceFromTarget < 0)
+        {
+            if (mOrderedNodes.Count > mBestShotIndex + 1)
             {
-                parent.mLhs = new Node(distance, aim, power, strategy, null, null, mLastNode);
-                newNode = parent.mLhs;
-                return newNode;
+                // are more node after the best
+                aim = mOrderedNodes[mBestShotIndex].mAim + (Math.Abs(mOrderedNodes[mBestShotIndex + 1].mAim - mOrderedNodes[mBestShotIndex].mAim)) * 0.5f;
+                power = mOrderedNodes[mBestShotIndex].mPower + (Math.Abs(mOrderedNodes[mBestShotIndex + 1].mPower - mOrderedNodes[mBestShotIndex].mPower)) * 0.5f;
             }
             else
             {
-                return InsertRecursively(parent.mLhs, distance, aim, power, strategy);
+                aim = mOrderedNodes[mBestShotIndex].mAim + (mTankData.mMaxAim - mOrderedNodes[mBestShotIndex].mAim) * 0.5f;
+                power = mOrderedNodes[mBestShotIndex].mPower + (mTankData.mMaxPower - mOrderedNodes[mBestShotIndex].mPower) * 0.5f;
             }
         }
         else
         {
-            if (parent.mRhs == null)
+            if (mOrderedNodes.Count > 1 && mBestShotIndex > 0)
             {
-                parent.mRhs = new Node(distance, aim, power, strategy, null, null, mLastNode);
-                newNode = parent.mRhs;
-                return newNode;
+                // are more node before the best
+                aim = mOrderedNodes[mBestShotIndex].mAim - (Math.Abs(mOrderedNodes[mBestShotIndex - 1].mAim - mOrderedNodes[mBestShotIndex].mAim)) * 0.5f;
+                power = mOrderedNodes[mBestShotIndex].mPower - (Math.Abs(mOrderedNodes[mBestShotIndex - 1].mPower - mOrderedNodes[mBestShotIndex].mPower)) * 0.5f;
             }
             else
             {
-                return InsertRecursively(parent.mRhs, distance, aim, power, strategy);
+                aim = mOrderedNodes[mBestShotIndex].mAim - (mOrderedNodes[mBestShotIndex].mAim - mTankData.mMinAim) * 0.5f;
+                power = mOrderedNodes[mBestShotIndex].mPower - (mOrderedNodes[mBestShotIndex].mPower - mTankData.mMinPower) * 0.5f;
             }
         }
     }
 
-    private Node FindLastBestStrategy( Node node)
+    private bool Empty()
     {
-        if (node.mLhs == null)
-        {
-            return node;
-        }
-        else
-        {
-            return FindLastBestStrategy(node.mLhs);
-        }
+        return mOrderedNodes.Count == 0;
     }
 
-    private void ComputeNewStrategyValues(StrategyType strategy, float previousAim, float previousPower, out float aim, out float power)
+    private void GetRandomStrategy(out float aim, out float power)
     {
-        float newAim = previousAim;
-        float newPower = previousPower;
-        switch (strategy)
-        {
-            case StrategyType.DecreaseAim:
-                newAim = UnityEngine.Random.Range(mTankData.mMinAim, previousAim - mTankData.mIncrement);
-                break;
-            case StrategyType.IncreaseAim:
-                newAim = UnityEngine.Random.Range(previousAim + mTankData.mIncrement, mTankData.mMaxAim);
-                break;
-            case StrategyType.DecreasePower:
-                newPower = UnityEngine.Random.Range(mTankData.mMinPower, previousPower - mTankData.mIncrement);
-                break;
-            case StrategyType.IncreasePower:
-                newPower = UnityEngine.Random.Range(previousPower + mTankData.mIncrement, mTankData.mMaxPower);
-                break;
-        }
-        aim = newAim;
-        power = newPower;
+        float n = UnityEngine.Random.Range(mTankData.mMinPower, mTankData.mMaxPower);
+        aim = UnityEngine.Random.Range(mTankData.mMinAim, mTankData.mMaxAim);
+        power = UnityEngine.Random.Range(mTankData.mMinPower, mTankData.mMaxPower);
+        aim = n;
+        power = n;
     }
 
-    private StrategyType ChangeStrategy(Node lastNode, Node previousNode)
-    {
-        StrategyType newStrategy = lastNode.mStrategy;
-        switch (newStrategy)
-        {
-            case StrategyType.DecreaseAim:
-                if (lastNode.mSqrdDistanceFromTarget < previousNode.mSqrdDistanceFromTarget)
-                    newStrategy = StrategyType.DecreasePower;
-                else
-                    newStrategy = StrategyType.IncreasePower;
-                break;
-            case StrategyType.IncreaseAim:
-                if (lastNode.mSqrdDistanceFromTarget < previousNode.mSqrdDistanceFromTarget)
-                    newStrategy = StrategyType.IncreasePower;
-                else
-                    newStrategy = StrategyType.DecreasePower;
-                break;
-            case StrategyType.DecreasePower:
-                if (lastNode.mSqrdDistanceFromTarget < previousNode.mSqrdDistanceFromTarget)
-                    newStrategy = StrategyType.DecreaseAim;
-                else
-                    newStrategy = StrategyType.IncreaseAim;
-                break;
-            case StrategyType.IncreasePower:
-                if (lastNode.mSqrdDistanceFromTarget < previousNode.mSqrdDistanceFromTarget)
-                    newStrategy = StrategyType.IncreaseAim;
-                else
-                    newStrategy = StrategyType.DecreaseAim;
-                break;
-        }
-        return newStrategy;
-    }
-
-    public StrategyType ChangeStrategyIfValueAreAtLimit( Node node)
-    {
-        StrategyType newStrategy = node.mStrategy;
-        switch (newStrategy)
-        {
-            case StrategyType.DecreaseAim:
-                if ( node.mAim <= mTankData.mMinAim )
-                    newStrategy = StrategyType.DecreasePower;
-                break;
-            case StrategyType.IncreaseAim:
-                if (node.mAim >= mTankData.mMaxAim)
-                    newStrategy = StrategyType.IncreasePower;
-                break;
-            case StrategyType.DecreasePower:
-                if (node.mPower <= mTankData.mMinPower)
-                    newStrategy = StrategyType.DecreaseAim;
-                break;
-            case StrategyType.IncreasePower:
-                if (node.mPower >= mTankData.mMaxPower)
-                    newStrategy = StrategyType.IncreaseAim;
-                break;
-        }
-        return newStrategy;
-    }
-
-    public StrategyType GetNextStrategy(out float aim, out float power)
-    {
-        Node node = FindLastBestStrategy(mRoot);
-        StrategyType newStrategy = node.mStrategy;
-
-        if (node != mLastNode)
-        {
-            newStrategy = ChangeStrategy(node, mLastNode);
-        }
-        else
-        {
-            newStrategy = ChangeStrategyIfValueAreAtLimit(node);
-        }
-        ComputeNewStrategyValues(newStrategy, node.mAim, node.mPower, out aim, out power);
-        return newStrategy;
-    }
-
-    public StrategyType GetRandomStrategy(out float aim, out float power)
-    {
-        aim = mTankData.mMinAim;
-        power = UnityEngine.Random.Range(mTankData.mMinPower * 0.5f, mTankData.mMaxPower);
-        return StrategyType.IncreasePower;
-    }
-
-    public void ResetStrategy()
-    {
-        mRoot = null;
-        mLastNode = null;
-    }
+   
 }
