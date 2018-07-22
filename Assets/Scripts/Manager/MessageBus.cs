@@ -13,4 +13,6 @@ public class MessageBus : Singleton<MessageBus>
     public Action<Tank> TankAttackFinished = delegate { };
     public Action<Tank> TankDestroyed = delegate { };
     public Action<Tank, float> TankAttackFinishing = delegate { };
+    public Action<float> AimUpdated = delegate { };
+    public Action<float> PowerUpdated = delegate { };
 }

@@ -34,7 +34,7 @@ public class TankPathMarker : MonoBehaviour {
         Vector3 dir = (end - start);
         float distance = dir.magnitude;
         dir.Normalize();
-        int intervals = Mathf.RoundToInt((distance / mIntervalLength));
+        int intervals = (int)(distance / mIntervalLength) + 1;
         Vector3 currentPosition = start;
         for (int i = 0; i < intervals; ++i)
         {

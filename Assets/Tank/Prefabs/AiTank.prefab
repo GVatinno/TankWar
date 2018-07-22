@@ -410,6 +410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mData: {fileID: 11400000, guid: 6775faac826e2cc40bc8b5aaab54a0a7, type: 2}
+  mName: Red
 --- !u!114 &114663796727395852
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -10,6 +10,8 @@ public class Tank : MonoBehaviour
 {
     [SerializeField]
     public TankData mData = null;
+    [SerializeField]
+    public string mName = "";
     private TankTurret mTurret = null;
 	private Rigidbody mRb = null;
 	private NavMeshPath mMovingPath = null;

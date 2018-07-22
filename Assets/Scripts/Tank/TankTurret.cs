@@ -73,7 +73,7 @@ public class TankTurret : MonoBehaviour
                 callback();
                 yield break;
             }
-            mAim = Mathf.SmoothStep(mAim, aim, t);
+            InternalSetAim(Mathf.SmoothStep(mAim, aim, t));
             t += Time.deltaTime;
             yield return null;
         }
@@ -81,37 +81,49 @@ public class TankTurret : MonoBehaviour
 
     public void SetPower(float power)
     {
-        mPower = Mathf.Clamp(power, mData.mMinPower, mData.mMaxPower);
+        InternalSetPower(Mathf.Clamp(power, mData.mMinPower, mData.mMaxPower));
     }
 
     public void ResetAim()
 	{
-		mAim = 0.0f;
+        InternalSetAim(0.0f);
 	}
 
 	public void ResetPower()
 	{
-		mPower = mData.mMinPower;
+        InternalSetPower(mData.mMinPower);
 	}
 
 	public void IncreaseAim()
 	{
-		mAim = Mathf.Min(mAim + mData.mIncrement, mData.mMaxAim);
+        InternalSetAim(Mathf.Min(mAim + mData.mIncrement, mData.mMaxAim));
 	}
 
 	public void DecreaseAim()
 	{
-		mAim = Mathf.Max(mAim - mData.mIncrement, mData.mMinAim);
+        InternalSetAim(Mathf.Max(mAim - mData.mIncrement, mData.mMinAim));
 	}
 
 	public void ChangePower()
 	{
-		mPower += mData.mIncrement;
+        InternalSetPower(mPower + mData.mIncrement);
 		if (mPower >= mData.mMaxPower) 
 		{
-			mPower = mData.mMinPower;
+            InternalSetPower(mData.mMinPower);
 		}
 	}
+
+    void InternalSetAim(float aim)
+    {
+        mAim = aim;
+        MessageBus.Instance.AimUpdated(aim);
+    }
+
+    void InternalSetPower(float power)
+    {
+        mPower = power;
+        MessageBus.Instance.PowerUpdated(power);
+    }
 
 	public void Shoot()
 	{
