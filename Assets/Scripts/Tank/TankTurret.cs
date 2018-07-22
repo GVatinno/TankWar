@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TankTurret : MonoBehaviour
 {
@@ -56,9 +57,26 @@ public class TankTurret : MonoBehaviour
 		}
 	}
 
-    public void SetAim(float aim)
+    public void SetAnimatedAim(float aim, Action callback)
     {
-        mAim = Mathf.Clamp(aim, mData.mMinAim, mData.mMaxAim);
+        StartCoroutine(AnimateAim(aim, callback));
+    }
+
+    IEnumerator AnimateAim(float aim, Action callback)
+    {
+        float t = 0.0f;
+        while (true)
+        {
+            if (t >= 1.0f)
+            {
+                mAim = aim;
+                callback();
+                yield break;
+            }
+            mAim = Mathf.SmoothStep(mAim, aim, t);
+            t += Time.deltaTime;
+            yield return null;
+        }
     }
 
     public void SetPower(float power)

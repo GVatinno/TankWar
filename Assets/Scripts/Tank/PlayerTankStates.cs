@@ -108,7 +108,6 @@ public class PlayerAttackState : IState<PlayerTankController>
 	public override void Enter(PlayerTankController agent)
 	{
 		mTankController = agent;
-		mTankController.mTank.ResetAim();
 		mTankController.mTank.ResetPower();
 	}
 

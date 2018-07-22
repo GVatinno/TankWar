@@ -406,8 +406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c0b5bd603f6c41c0b620f364b684351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mShellPrefab: {fileID: 114124756684526384, guid: 53b6a06a09cfffc40aba56bbe4cad1fe,
-    type: 2}
   mShellSource: {fileID: 1405403612154818}
   mTankView: {fileID: 1315376852946392}
   mData: {fileID: 11400000, guid: 6775faac826e2cc40bc8b5aaab54a0a7, type: 2}

@@ -12,10 +12,10 @@ public class Tank : MonoBehaviour
     private TankTurret mTurret = null;
 	private Rigidbody mRb = null;
 	private NavMeshPath mMovingPath = null;
-	private float mSlowingDownRadius = 1.0f;
-	private float mTankSpeed = 2.0f;
+    public float mTankSpeed = 0.0f;
 
-	void Awake()
+
+    void Awake()
 	{
 		EnemyManager.Instance.RegisterEnemy(this);
 		mTurret = GetComponentInChildren<TankTurret>();
@@ -33,9 +33,9 @@ public class Tank : MonoBehaviour
 		mTurret.SetCurrentTarget(EnemyManager.Instance.GetEnemyTargetFromEnemy(this));
 	}
 
-    public void SetAim(float aim)
+    public void SetAnimatedAim(float aim, Action callback)
     {
-        mTurret.SetAim(aim);
+        mTurret.SetAnimatedAim(aim, callback);
     }
 
     public void SetPower(float power)
@@ -78,48 +78,60 @@ public class Tank : MonoBehaviour
 		NavMesh.CalculatePath(this.transform.position, position, NavMesh.AllAreas, mMovingPath);
 		if (mMovingPath != null && mMovingPath.corners.Length > 1)
 		{
-			StopAllCoroutines ();
-			StartCoroutine(Moving());
+
+            Vector3[] corners = new Vector3[mMovingPath.corners.Length];
+            mMovingPath.corners.CopyTo(corners, 0);
+            mTankSpeed = 0.0f;
+            StopAllCoroutines ();
+			StartCoroutine(Moving(corners));
 		}
 	}
 
-	IEnumerator Moving()
+	IEnumerator Moving(Vector3[] corners)
 	{
 		int index = 1;
-		while( index < mMovingPath.corners.Length )
+
+		while( index < corners.Length )
 		{
-			yield return StartCoroutine( ReorientTank(index) );
+            if (IsReorientingNeeded(corners[index]))
+            {
+                yield return StartCoroutine(ReorientTank(corners[index]));
+            }
+
 			while (true)
 			{
-				Vector3 direction = (mMovingPath.corners[index] - this.transform.position).normalized;
-				float distance = (mMovingPath.corners[index] - this.transform.position).sqrMagnitude;
-				if (distance > mSlowingDownRadius)
+				Vector3 direction = (corners[index] - this.transform.position).normalized;
+				float distance = (corners[index] - this.transform.position).sqrMagnitude;
+				if (distance > mData.mSlowingDownRadius)
 				{
 					mRb.MovePosition(this.transform.position + direction * mTankSpeed * Time.deltaTime);
-					yield return new WaitForFixedUpdate();
+                    mTankSpeed = Mathf.Min(mTankSpeed + mData.mTankAcceleration * Time.deltaTime, mData.mTankSpeedMax);
+                    yield return new WaitForFixedUpdate();
 				}
 				else 
 				{
-					if (distance < mSlowingDownRadius * 0.08f) {
+					if (distance < mData.mArrivalRadius) {
 						break;
 					}
-					mRb.MovePosition(this.transform.position + direction * mTankSpeed *  distance / mSlowingDownRadius * Time.deltaTime);
-					yield return new WaitForFixedUpdate();
+					mRb.MovePosition(this.transform.position + direction * mTankSpeed *  distance / mData.mSlowingDownRadius * Time.deltaTime);
+                    mTankSpeed = Mathf.Min(mTankSpeed + mData.mTankAcceleration * Time.deltaTime, mData.mTankSpeedMax);
+                    yield return new WaitForFixedUpdate();
 				}
 
 			}
 			index = index + 1;
-			yield return new WaitForFixedUpdate();
+            mTankSpeed = 0.0f;
+            yield return new WaitForFixedUpdate();
 		}
 		MessageBus.Instance.TankReachedPosition (this);
 	}
 
-	IEnumerator ReorientTank(int index)
+	IEnumerator ReorientTank(Vector3 target)
 	{
-		while (true)
+        while (true)
 		{
-			if (IsReorientingNeeded (mMovingPath.corners [index])) {
-				Vector3 toTarget = (mMovingPath.corners [index] - this.transform.position).normalized;
+            if (IsReorientingNeeded (target)) {
+				Vector3 toTarget = (target - this.transform.position).normalized;
 				mRb.MoveRotation (Quaternion.Slerp (this.transform.rotation, Quaternion.LookRotation (toTarget), Time.deltaTime));
 				yield return null;
 			}
@@ -127,7 +139,6 @@ public class Tank : MonoBehaviour
 				break;
 			}
 		}
-
 	}
 
 	bool IsReorientingNeeded(Vector3 target)
@@ -145,9 +156,11 @@ public class Tank : MonoBehaviour
 			foreach (var c in mMovingPath.corners) 
 			{
 				Gizmos.DrawWireCube (c, Vector3.one * 0.3f);
-				Gizmos.DrawWireSphere(c, mSlowingDownRadius);
+				Gizmos.DrawWireSphere(c, mData.mSlowingDownRadius);
 			}
 		}
-	}
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(this.transform.position, mData.mAiTankSearchRadius);
+    }
 
 }

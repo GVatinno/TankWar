@@ -6,7 +6,7 @@ using UnityEngine;
 public class PoolSound : MonoBehaviour {
 
     [SerializeField]
-    PoolManager.PoolType type;
+    PoolManager.PoolType type = PoolManager.PoolType.NONE;
     AudioSource mAudioSource = null;
     float mClipLength = 0.0f;
     

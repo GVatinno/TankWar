@@ -7,6 +7,7 @@ public sealed class PoolManager : MonoBehaviour
 
     public enum PoolType
     {
+        NONE = -1,
         EXPLOSION = 0,
         SHELL = 1,
     }

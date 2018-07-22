@@ -43,7 +43,6 @@ public class TankCameraBehavior : MonoBehaviour {
             }
             transform.position = Vector3.Lerp(transform.position, position, Time.deltaTime * 0.8f);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 0.9f);
-            Debug.Log("Iam still executing");
             yield return null;
         }
     }

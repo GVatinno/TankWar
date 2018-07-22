@@ -56,9 +56,7 @@ public class AiTankStrategy
             mOrderedNodes = mOrderedNodes.OrderBy(o => o.mSqrdDistanceFromTarget).ToList();
             mBestShotIndex = FindBestShotIndex();
         }
-
-        Debug.Log("BEST SHOIT aim" + mOrderedNodes[mBestShotIndex].mAim + "power" + mOrderedNodes[mBestShotIndex].mPower);
-    }
+   }
 
     public void GetNextStrategy(out float aim, out float power)
     {
