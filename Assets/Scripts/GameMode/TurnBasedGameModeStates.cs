@@ -26,7 +26,8 @@ public class TurnBasedGameModeOpeningState : IState<TurnBasedGameMode>
 	{
 		GameObject.Instantiate (agent.mData.AiTank, agent.mData.Spawners[0], Quaternion.identity );
 		GameObject.Instantiate (agent.mData.PlayerTank, agent.mData.Spawners[1], Quaternion.identity );
-		agent.mFSM.ChangeState ( new PositioningStateGameModeState() );
+        MessageBus.Instance.GameStarted();
+        agent.mFSM.ChangeState ( new PositioningStateGameModeState() );
 	}
 
 	public override void Execute(TurnBasedGameMode agent)
@@ -80,7 +81,7 @@ public class TurnBasedGameModeAttackState : IState<TurnBasedGameMode>
     public override void Enter(TurnBasedGameMode agent)
 	{
         mGameMode = agent;
-        MessageBus.Instance.StartTankAttack (EnemyManager.Instance.GetPlayerTank ());
+        StartAttack(EnemyManager.Instance.GetPlayerTank ());
         MessageBus.Instance.TankAttackFinished += OnTankAttackFinished;
         MessageBus.Instance.TankDestroyed += OnTankDestroyed;
     }
@@ -97,14 +98,21 @@ public class TurnBasedGameModeAttackState : IState<TurnBasedGameMode>
 
     private void OnTankAttackFinished( Tank tank )
     {
+        Tank tankToUse = null;
         if (tank.CompareTag("Player"))
         {
-            MessageBus.Instance.StartTankAttack(EnemyManager.Instance.GetAiTank());
+            tankToUse = EnemyManager.Instance.GetAiTank();
         }
         else
         {
-            MessageBus.Instance.StartTankAttack(EnemyManager.Instance.GetPlayerTank());
+            tankToUse = EnemyManager.Instance.GetPlayerTank();
         }
+        StartAttack(tankToUse);
+    }
+
+    private void StartAttack(Tank tank)
+    {
+        CameraManager.Instance.SetTankView(tank, () => MessageBus.Instance.StartTankAttack(tank) ); 
     }
 
     private void OnTankDestroyed( Tank tank )
@@ -117,21 +125,17 @@ public class TurnBasedGameModeAttackState : IState<TurnBasedGameMode>
 
 public class EndOfGameModeState : IState<TurnBasedGameMode>
 {
-    float timePassed = 0.0f;
-
     public override void Enter(TurnBasedGameMode agent)
     {
-        timePassed = 0.0f;
+        CameraManager.Instance.ResetCamera(() =>
+        {
+            DestroyAllTanks();
+            agent.mFSM.ChangeState(new TurnBasedGameModeOpeningState());
+        });
     }
 
     public override void Execute(TurnBasedGameMode agent)
     {
-        if (timePassed > 4.0f)
-        {
-            DestroyAllTanks();
-            agent.mFSM.ChangeState(new TurnBasedGameModeOpeningState());
-        }
-        timePassed += Time.deltaTime;
     }
 
     public override void Exit(TurnBasedGameMode agent)

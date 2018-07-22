@@ -8,7 +8,7 @@ public abstract class Singleton<T>  where T  : new()
 {
 	private static T s_instance;
 
-	public static T Instance
+    public static T Instance
 	{
 		get
 		{

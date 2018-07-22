@@ -21,6 +21,11 @@ public class EnemyManager : Singleton<EnemyManager>
         return new List<Tank>(mTanks);
     }
 
+    public List<Tank> GetAllEnemiesNotAlloc()
+    {
+        return mTanks;
+    }
+
     public Tank GetEnemyTargetFromEnemy(Tank tank)
     {
         return mTanks.Find( o => o != tank);

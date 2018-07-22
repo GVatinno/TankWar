@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class MessageBus : Singleton<MessageBus>
 {
+    public Action GameStarted = delegate { };
     public Action<Tank> TankReachedPosition = delegate {  };
 	public Action StartPositioning = delegate {  };
 	public Action<Tank> StartTankAttack = delegate {  };

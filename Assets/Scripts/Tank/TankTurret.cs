@@ -10,6 +10,8 @@ public class TankTurret : MonoBehaviour
     [SerializeField]
 	private GameObject mShellSource = null;
     [SerializeField]
+    private GameObject mTankView = null;
+    [SerializeField]
     private TankData mData = null;
 	private Tank mCurrentTarget = null;
 	private Tank mThisTank = null;
@@ -18,7 +20,13 @@ public class TankTurret : MonoBehaviour
     private float mAim = 0.0f; // [ 0.0f, 1.0f]
     private float mPower = 0.1f; // [ 0.0f, 1.0f]
 
-    
+    public GameObject tankView
+    {
+        get
+        {
+            return mTankView;
+        }
+    }
 
 
     void Awake()

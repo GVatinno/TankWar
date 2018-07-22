@@ -15,5 +15,5 @@ MonoBehaviour:
   PlayerTank: {fileID: 114076837838353142, guid: b08f5ae45538c45f9bfb4cb6ca6c3697,
     type: 2}
   Spawners:
-  - {x: 0, y: 0, z: 0}
+  - {x: -10, y: 0, z: 0}
   - {x: 10, y: 0, z: 0}
