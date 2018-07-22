@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class TankTurret : MonoBehaviour
 {
-
-    [SerializeField]
-    private Shell mShellPrefab = null; // TODO REMOVE
     [SerializeField]
 	private GameObject mShellSource = null;
     [SerializeField]
@@ -103,9 +100,10 @@ public class TankTurret : MonoBehaviour
 		mCannonAudioSource.Play ();
         if ( mThisTank.tag == "Ai" )
             Debug.Log("tank " + this.gameObject.tag + " aim " + mAim + " power " + mPower );
-        Shell shell = Instantiate<Shell> (mShellPrefab);
-		shell.Shoot (mShellSource.transform.position, mShellSource.transform.forward * mPower * mData.mPowerMultiplier, mThisTank, mCurrentTarget);
-		ResetPower ();
+        GameObject shell = PoolManager.Instance.GetPoolElement(PoolManager.PoolType.SHELL);
+        shell.SetActive(true);
+        shell.GetComponent<Shell>().Shoot (mShellSource.transform.position, mShellSource.transform.forward * mPower * mData.mPowerMultiplier, mThisTank, mCurrentTarget);
+        ResetPower ();
 	}
 
 

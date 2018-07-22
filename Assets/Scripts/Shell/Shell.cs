@@ -39,15 +39,22 @@ public class Shell : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		 // TODO USE POOL
         MessageBus.Instance.TankAttackFinishing(mOwner, ComputeSignedDistance(other.ClosestPointOnBounds(transform.position)));
         if ( other.gameObject.layer == Utils.LayerTank)
         {
             MessageBus.Instance.TankDestroyed(other.GetComponent<Tank>());
-            // TODO CREATE A POOL POOL OBJECT FOR THIS SOUND
+            PlayExplosionSound();
         }
         MessageBus.Instance.TankAttackFinished(mOwner);
-        Destroy(this.gameObject);
+        PoolManager.Instance.ReturnPoolElement(PoolManager.PoolType.SHELL, this.gameObject);
+    }
+
+    void PlayExplosionSound()
+    {
+        GameObject explosion = PoolManager.Instance.GetPoolElement(PoolManager.PoolType.EXPLOSION);
+        explosion.SetActive(true);
+        explosion.transform.position = this.transform.position;
+        explosion.GetComponent<PoolSound>().Play();
     }
 
     
