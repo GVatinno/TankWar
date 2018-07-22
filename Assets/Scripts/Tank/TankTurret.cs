@@ -116,8 +116,6 @@ public class TankTurret : MonoBehaviour
 	public void Shoot()
 	{
 		mCannonAudioSource.Play ();
-        if ( mThisTank.tag == "Ai" )
-            Debug.Log("tank " + this.gameObject.tag + " aim " + mAim + " power " + mPower );
         GameObject shell = PoolManager.Instance.GetPoolElement(PoolManager.PoolType.SHELL);
         shell.SetActive(true);
         shell.GetComponent<Shell>().Shoot (mShellSource.transform.position, mShellSource.transform.forward * mPower * mData.mPowerMultiplier, mThisTank, mCurrentTarget);

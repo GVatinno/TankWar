@@ -10,6 +10,7 @@ public sealed class PoolManager : MonoBehaviour
         NONE = -1,
         EXPLOSION = 0,
         SHELL = 1,
+        MARKER = 2,
     }
 
     [SerializeField]

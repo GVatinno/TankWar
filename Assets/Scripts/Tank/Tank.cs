@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(TankPathMarker))]
 public class Tank : MonoBehaviour
 {
     [SerializeField]
@@ -12,7 +13,8 @@ public class Tank : MonoBehaviour
     private TankTurret mTurret = null;
 	private Rigidbody mRb = null;
 	private NavMeshPath mMovingPath = null;
-    public float mTankSpeed = 0.0f;
+    private float mTankSpeed = 0.0f;
+    private TankPathMarker mPathMarker = null;
 
 
     void Awake()
@@ -20,7 +22,8 @@ public class Tank : MonoBehaviour
 		EnemyManager.Instance.RegisterEnemy(this);
 		mTurret = GetComponentInChildren<TankTurret>();
 		mRb = GetComponent<Rigidbody>();
-		mMovingPath = new NavMeshPath();
+        mPathMarker = GetComponent<TankPathMarker>();
+        mMovingPath = new NavMeshPath();
 	}
 
 	private void OnDestroy()
@@ -78,9 +81,9 @@ public class Tank : MonoBehaviour
 		NavMesh.CalculatePath(this.transform.position, position, NavMesh.AllAreas, mMovingPath);
 		if (mMovingPath != null && mMovingPath.corners.Length > 1)
 		{
-
             Vector3[] corners = new Vector3[mMovingPath.corners.Length];
             mMovingPath.corners.CopyTo(corners, 0);
+            mPathMarker.SetPath(corners);
             mTankSpeed = 0.0f;
             StopAllCoroutines ();
 			StartCoroutine(Moving(corners));
@@ -123,6 +126,7 @@ public class Tank : MonoBehaviour
             mTankSpeed = 0.0f;
             yield return new WaitForFixedUpdate();
 		}
+        mPathMarker.ClearPath();
 		MessageBus.Instance.TankReachedPosition (this);
 	}
 
