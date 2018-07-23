@@ -36,8 +36,8 @@ public class HUDController : MonoBehaviour {
     void OnAttack(Tank tank)
     {
         OnTankNameChanged(tank.mName);
-        OnAimUpdate(0.0f);
-        OnPowerUpdate(0.0f);
+        OnAimUpdate(tank.currentAim);
+        OnPowerUpdate(tank.currentPower);
     }
 
     void OnTankNameChanged(string name)
@@ -47,11 +47,11 @@ public class HUDController : MonoBehaviour {
 
     void OnAimUpdate( float aim )
     {
-        mAimValue.text = aim.ToString();
+        mAimValue.text = System.Math.Round(aim,2).ToString();
     }
 
     void OnPowerUpdate( float power )
     {
-        mPowerValue.text = power.ToString();
+        mPowerValue.text = System.Math.Round(power,2).ToString();
     }
 }

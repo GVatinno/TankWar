@@ -17,6 +17,16 @@ public class TankTurret : MonoBehaviour
 	private Quaternion mInitialOrientation;
     private float mAim = 0.0f; // [ 0.0f, 1.0f]
     private float mPower = 0.1f; // [ 0.0f, 1.0f]
+	
+	public float currentAim
+	{
+		get { return mAim; }
+	}
+	
+	public float currentPower
+	{
+		get { return mPower; }
+	}
 
     public GameObject tankView
     {
@@ -131,7 +141,6 @@ public class TankTurret : MonoBehaviour
         GameObject shell = PoolManager.Instance.GetPoolElement(PoolManager.PoolType.SHELL);
         shell.SetActive(true);
         shell.GetComponent<Shell>().Shoot (mShellSource.transform.position, mShellSource.transform.forward * mPower * mData.mPowerMultiplier, mThisTank, mCurrentTarget);
-        ResetPower ();
 	}
 
 

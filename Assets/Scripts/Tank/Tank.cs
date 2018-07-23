@@ -18,8 +18,18 @@ public class Tank : MonoBehaviour
     private float mTankSpeed = 0.0f;
     private TankPathMarker mPathMarker = null;
 
+	public float currentAim
+	{
+		get { return mTurret.currentAim; }
+	}
+	
+	public float currentPower
+	{
+		get { return mTurret.currentPower; }
+	}
 
-    void Awake()
+
+	void Awake()
 	{
 		EnemyManager.Instance.RegisterEnemy(this);
 		mTurret = GetComponentInChildren<TankTurret>();

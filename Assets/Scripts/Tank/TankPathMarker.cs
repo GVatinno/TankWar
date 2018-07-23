@@ -34,17 +34,23 @@ public class TankPathMarker : MonoBehaviour {
         Vector3 dir = (end - start);
         float distance = dir.magnitude;
         dir.Normalize();
-        int intervals = (int)(distance / mIntervalLength) + 1;
+        int intervals = (int)(distance / mIntervalLength);
         Vector3 currentPosition = start;
-        for (int i = 0; i < intervals; ++i)
+        for (int i = 0; i <= intervals; ++i)
         {
-            GameObject marker = PoolManager.Instance.GetPoolElement(PoolManager.PoolType.MARKER);
-            marker.SetActive(true);
-            marker.GetComponentInChildren<Renderer>().material.color = mMarkerColor;
-            marker.transform.position = currentPosition;
+            CreateMarker(currentPosition);
             currentPosition += mIntervalLength * dir;
-            mMarkers.Add(marker);
         }
+        CreateMarker(end);
+    }
+
+    void CreateMarker(Vector3 position)
+    {
+        GameObject marker = PoolManager.Instance.GetPoolElement(PoolManager.PoolType.MARKER);
+        marker.SetActive(true);
+        marker.GetComponentInChildren<Renderer>().material.color = mMarkerColor;
+        marker.transform.position = position;
+        mMarkers.Add(marker);
     }
 
     public void ClearPath()
