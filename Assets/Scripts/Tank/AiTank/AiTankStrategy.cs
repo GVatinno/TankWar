@@ -7,12 +7,12 @@ public class Node
 {
     public Node( float distance, float aim, float power )
     {
-        mSqrdDistanceFromTarget = distance;
+        mDistanceFromTarget = distance;
         mAim = aim;
         mPower = power;
     }
 
-    public float mSqrdDistanceFromTarget;
+    public float mDistanceFromTarget;
     public float mAim;
     public float mPower;
 }
@@ -23,6 +23,7 @@ public class AiTankStrategy
     {
         mTankData = data;
         mOrderedNodes = new List<Node>();
+        mBestShotIndex = -1;
     }
 
     TankData mTankData = null;
@@ -35,7 +36,7 @@ public class AiTankStrategy
         int best = 0;
         for ( int i = 1; i < mOrderedNodes.Count; ++i)
         {
-            if ( Mathf.Abs(mOrderedNodes[best].mSqrdDistanceFromTarget) > Mathf.Abs(mOrderedNodes[i].mSqrdDistanceFromTarget))
+            if ( Mathf.Abs(mOrderedNodes[best].mDistanceFromTarget) > Mathf.Abs(mOrderedNodes[i].mDistanceFromTarget))
             {
                 best = i;
             }
@@ -53,7 +54,7 @@ public class AiTankStrategy
         else
         {
             mOrderedNodes.Add(new Node(distanceFromTarget, aim, power));
-            mOrderedNodes = mOrderedNodes.OrderBy(o => o.mSqrdDistanceFromTarget).ToList();
+            mOrderedNodes = mOrderedNodes.OrderBy(o => o.mDistanceFromTarget).ToList();
             mBestShotIndex = FindBestShotIndex();
         }
    }
@@ -67,7 +68,7 @@ public class AiTankStrategy
         }
 
 
-        if (mOrderedNodes[mBestShotIndex].mSqrdDistanceFromTarget < 0)
+        if (mOrderedNodes[mBestShotIndex].mDistanceFromTarget < 0)
         {
             if (mOrderedNodes.Count > mBestShotIndex + 1)
             {
@@ -104,9 +105,8 @@ public class AiTankStrategy
 
     private void GetRandomStrategy(out float aim, out float power)
     {
+        // both ranges are [0, 1] so we can use the power
         float n = UnityEngine.Random.Range(mTankData.mMinPower, mTankData.mMaxPower);
-        aim = UnityEngine.Random.Range(mTankData.mMinAim, mTankData.mMaxAim);
-        power = UnityEngine.Random.Range(mTankData.mMinPower, mTankData.mMaxPower);
         aim = n;
         power = n;
     }

@@ -7,23 +7,26 @@ using UnityEngine;
 public class PlayerTankController : MonoBehaviour
 {
 
-    [HideInInspector]
-	public Tank mTank = null;
-    [HideInInspector]
-    public FSM<PlayerTankController> mFSM = null;
-	
+	private Tank mTank = null;
+    private FSM<PlayerTankController> mFSM = null;
+
+	public Tank tank
+	{
+		get { return mTank; }
+	}
+
 	void Awake()
 	{
 		mTank = GetComponent<Tank>();
 		mFSM = new FSM<PlayerTankController>(this);
-		mFSM.GlobalState = new PlayerGlobalState();
-		mFSM.ChangeState (new PlayerIdleState ());
+		ChangeState(new PlayerIdleState ());
 	}
 
-	void Start () {
-		
+	public void ChangeState(IState<PlayerTankController> state)
+	{
+		mFSM.ChangeState (state);
 	}
-	
+
 
 	void Update () {
 		mFSM.Update();

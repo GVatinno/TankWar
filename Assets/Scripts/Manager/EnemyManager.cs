@@ -33,12 +33,12 @@ public class EnemyManager : Singleton<EnemyManager>
 		
 	public Tank GetPlayerTank()
 	{
-		return mTanks.Find( o => o.CompareTag("Player"));
+		return mTanks.Find( o => o.CompareTag(Utils.PlayerTag));
 	}
 
 	public Tank GetAiTank()
 	{
-		return mTanks.Find( o => o.CompareTag("Ai"));
+		return mTanks.Find( o => o.CompareTag(Utils.AiTag));
 	}
 
 

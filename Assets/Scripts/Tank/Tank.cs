@@ -9,7 +9,7 @@ using UnityEngine.AI;
 public class Tank : MonoBehaviour
 {
     [SerializeField]
-    public TankData mData = null;
+    private TankData mData = null;
     [SerializeField]
     public string mName = "";
     private TankTurret mTurret = null;
@@ -26,6 +26,11 @@ public class Tank : MonoBehaviour
 	public float currentPower
 	{
 		get { return mTurret.currentPower; }
+	}
+
+	public TankData tankData
+	{
+		get { return mData; }
 	}
 
 

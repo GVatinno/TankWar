@@ -3,20 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class TankCameraBehavior : MonoBehaviour {
+public class TankShootingCamera : MonoBehaviour {
 
     Tank mTank = null;
     TankTurret mTurret = null;
-
-    void Awake () {
-    }
 
     public void SetTanks(Tank tank, Action callback)
     {
         mTank = tank;
         mTurret = mTank.GetComponentInChildren<TankTurret>();
         StopAllCoroutines();
-        StartCoroutine(LookAt(mTurret.tankView.transform.position, mTurret.tankView.transform.rotation, callback));
+        StartCoroutine(GoAndLookAt(mTurret.tankView.transform.position, mTurret.tankView.transform.rotation, callback));
     }
 
     public void ResetCamera(Vector3 position, Quaternion rotation, Action callback)
@@ -24,7 +21,7 @@ public class TankCameraBehavior : MonoBehaviour {
         mTank = null;
         mTurret = null;
         StopAllCoroutines();
-        StartCoroutine(LookAt(position, rotation, callback));
+        StartCoroutine(GoAndLookAt(position, rotation, callback));
     }
 
     void OnDisable()
@@ -32,7 +29,7 @@ public class TankCameraBehavior : MonoBehaviour {
         StopAllCoroutines();
     }
 
-    IEnumerator LookAt(Vector3 position, Quaternion rotation, Action callback)
+    IEnumerator GoAndLookAt(Vector3 position, Quaternion rotation, Action callback)
     {
         while (true)
         {

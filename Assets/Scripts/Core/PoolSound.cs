@@ -6,9 +6,9 @@ using UnityEngine;
 public class PoolSound : MonoBehaviour {
 
     [SerializeField]
-    PoolManager.PoolType type = PoolManager.PoolType.NONE;
-    AudioSource mAudioSource = null;
-    float mClipLength = 0.0f;
+    private PoolManager.PoolType type = PoolManager.PoolType.NONE;
+    private AudioSource mAudioSource = null;
+    private float mClipLength = 0.0f;
     
 	void Awake () {
         mAudioSource = GetComponent<AudioSource>();

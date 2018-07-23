@@ -5,21 +5,25 @@ using UnityEngine;
 public class TurnBasedGameMode : MonoBehaviour {
 
 	[SerializeField]
-	public TurnBasedGameModeData mData;
+	private TurnBasedGameModeData mData = null;
 	[HideInInspector]
-	public FSM<TurnBasedGameMode> mFSM = null;
-
+	private FSM<TurnBasedGameMode> mFSM = null;
+	
+	public TurnBasedGameModeData data
+	{
+		get { return mData; }
+	}
+	
 	void Awake()
 	{
 		mFSM = new FSM<TurnBasedGameMode>(this);
-		mFSM.GlobalState = new TurnBasedGameModeGlobalState();
-		mFSM.ChangeState(new TurnBasedGameModeOpeningState());
-	}
-
-	void Start () {
-		
+		ChangeState(new TurnBasedGameModeOpeningState());
 	}
 	
+	public void ChangeState(IState<TurnBasedGameMode> state)
+	{
+		mFSM.ChangeState (state);
+	}
 
 	void Update () {
 		mFSM.Update ();

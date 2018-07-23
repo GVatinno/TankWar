@@ -22,14 +22,6 @@ public class FSM<T>
         set { mPreviousState = value; }
     }
 
-
-    private IState<T> mGlobalState = null;
-    public IState<T> GlobalState
-    {
-        get { return mGlobalState; }
-        set { mGlobalState = value; }
-    }
-
     public FSM(T agent)
     {
         owner = agent;
@@ -38,35 +30,11 @@ public class FSM<T>
     // This is called by the Agent whenever the Game invokes the Agent's Update() method
     public void Update()
     {
-        if (mGlobalState != null)
-        {
-            mGlobalState.Execute(owner);
-        }
         if (mCurrentState != null)
         {
             mCurrentState.Execute(owner);
         }
     }
-
-//    public bool HandleMessage(Telegram telegram)
-//    {
-//        if (globalState != null)
-//        {
-//            if (globalState.OnMesssage(owner, telegram))
-//            {
-//                return true;
-//            }
-//
-//        }
-//        if (currentState != null)
-//        {
-//            if (currentState.OnMesssage(owner, telegram))
-//            {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
 
     public void ChangeState(IState<T> newState)

@@ -8,13 +8,12 @@ public class TankTurret : MonoBehaviour
     [SerializeField]
 	private GameObject mShellSource = null;
     [SerializeField]
-    private GameObject mTankView = null;
+    private GameObject mTankView = null; // this is the tanks placeholder for the camera to position itself in tankview
     [SerializeField]
     private TankData mData = null;
-	private Tank mCurrentTarget = null;
+	private Tank mCurrentTankTarget = null;
 	private Tank mThisTank = null;
 	private AudioSource mCannonAudioSource = null;
-	private Quaternion mInitialOrientation;
     private float mAim = 0.0f; // [ 0.0f, 1.0f]
     private float mPower = 0.1f; // [ 0.0f, 1.0f]
 	
@@ -42,11 +41,6 @@ public class TankTurret : MonoBehaviour
 		mThisTank = GetComponentInParent<Tank> ();
 		mCannonAudioSource = GetComponent<AudioSource> ();
 	}
-	
-	void Start()
-	{
-		mInitialOrientation = this.transform.rotation;
-	}
 		
 	void OnDestroy()
 	{
@@ -55,14 +49,14 @@ public class TankTurret : MonoBehaviour
 	
 	public void SetCurrentTarget( Tank tank )
 	{
-		mCurrentTarget = tank;
+		mCurrentTankTarget = tank;
 	}
 
 	void Update ()
 	{
-		if (mCurrentTarget) 
+		if (mCurrentTankTarget) 
 		{
-			Vector3 vectorToTarget = mCurrentTarget.transform.position - this.transform.position;
+			Vector3 vectorToTarget = mCurrentTankTarget.transform.position - this.transform.position;
 			this.transform.rotation = Quaternion.AngleAxis (mAim * mData.mMaxAimAngle, -this.transform.right) * Quaternion.LookRotation (vectorToTarget.normalized);
 		}
 	}
@@ -140,7 +134,7 @@ public class TankTurret : MonoBehaviour
 		mCannonAudioSource.Play ();
         GameObject shell = PoolManager.Instance.GetPoolElement(PoolManager.PoolType.SHELL);
         shell.SetActive(true);
-        shell.GetComponent<Shell>().Shoot (mShellSource.transform.position, mShellSource.transform.forward * mPower * mData.mPowerMultiplier, mThisTank, mCurrentTarget);
+        shell.GetComponent<Shell>().Shoot (mShellSource.transform.position, mShellSource.transform.forward * mPower * mData.mPowerMultiplier, mThisTank, mCurrentTankTarget);
 	}
 
 

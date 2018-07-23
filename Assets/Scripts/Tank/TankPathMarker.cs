@@ -15,8 +15,6 @@ public class TankPathMarker : MonoBehaviour {
         mMarkers = new List<GameObject>();
     }
 
-    
-
     public void SetPath( Vector3[] path )
     {
         ClearPath();
