@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(TankPathMarker))]
+[RequireComponent(typeof(Animator))]
 public class Tank : MonoBehaviour
 {
     [SerializeField]
@@ -17,6 +18,7 @@ public class Tank : MonoBehaviour
 	private NavMeshPath mMovingPath = null;
     private float mTankSpeed = 0.0f;
     private TankPathMarker mPathMarker = null;
+    private Animator mTankAnimator = null;
 
 	public float currentAim
 	{
@@ -40,6 +42,7 @@ public class Tank : MonoBehaviour
 		mTurret = GetComponentInChildren<TankTurret>();
 		mRb = GetComponent<Rigidbody>();
         mPathMarker = GetComponent<TankPathMarker>();
+        mTankAnimator = GetComponent<Animator>();
         mMovingPath = new NavMeshPath();
 	}
 
@@ -92,6 +95,12 @@ public class Tank : MonoBehaviour
 	{
 		mTurret.Shoot ();
 	}
+
+    public void Boast()
+    {
+        // we only use the animator with that one animation of boasting
+        mTankAnimator.enabled = true;
+    }
 
 	public void MoveTo(Vector3 position)
 	{
@@ -166,7 +175,7 @@ public class Tank : MonoBehaviour
 	{
 		Vector3 toTarget = (target - this.transform.position).normalized;
 		float dot = Vector3.Dot(toTarget, this.transform.forward);
-		return dot < 0.99f;
+		return dot < 0.999f;
 	}
 
 	void OnDrawGizmos()

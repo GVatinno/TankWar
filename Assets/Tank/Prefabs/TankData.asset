@@ -14,7 +14,7 @@ MonoBehaviour:
   mSlowingDownRadius: 1
   mArrivalRadius: 0.08
   mTankSpeedMax: 3
-  mTankAcceleration: 0.3
-  mAiTankSearchRadius: 30
+  mTankAcceleration: 0.5
+  mAiTankSearchRadius: 15
   mMaxAimAngle: 30
   mPowerMultiplier: 15

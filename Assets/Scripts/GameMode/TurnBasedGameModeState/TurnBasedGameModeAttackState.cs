@@ -42,6 +42,9 @@ public class TurnBasedGameModeAttackState : IState<TurnBasedGameMode>
 
     private void OnTankDestroyed( Tank tank )
     {
+        // get the other tank before destroying this one to boast.
+        EnemyManager.Instance.GetEnemyTargetFromEnemy(tank).Boast();
+
         GameObject.Destroy(tank.gameObject);
         mGameMode.ChangeState(new TurnBasedGameModeEndOfGameState());
     }

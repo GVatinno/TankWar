@@ -16,11 +16,17 @@ public class CameraController : SceneSingleton<CameraController>
         mTankShootingCameraBehaviour = mCamera.GetComponent<TankShootingCamera>();
     }
 
+    public Camera GetCamera()
+    {
+        return mCamera;
+    }
+
     public void SetTankView(Tank tank, Action callback)
     {
         mFollowTankCamera.enabled = false;
         mTankShootingCameraBehaviour.SetTanks(tank, callback);
         mTankShootingCameraBehaviour.enabled = true;
+
     }
 
     public void ResetCamera(Action callback)

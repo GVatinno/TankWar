@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 65879560605917762}
   - component: {fileID: 54968131349844130}
   - component: {fileID: 114027267122330184}
+  - component: {fileID: 95892743979921688}
   m_Layer: 10
   m_Name: PlayerTank
   m_TagString: Player
@@ -384,6 +385,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!95 &95892743979921688
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1371395981225988}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e5ab497f87fba7b4b9b4c52b104e5d63, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114027267122330184
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -435,4 +453,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1b2d32567d5e409d8d04c34d318f89b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mTank: {fileID: 0}

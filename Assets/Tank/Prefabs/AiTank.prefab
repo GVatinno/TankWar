@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 65500596436925832}
   - component: {fileID: 54480721394050616}
   - component: {fileID: 114747692860086642}
+  - component: {fileID: 95448721842186206}
   m_Layer: 10
   m_Name: AiTank
   m_TagString: Ai
@@ -384,6 +385,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!95 &95448721842186206
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1109074802197560}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e5ab497f87fba7b4b9b4c52b104e5d63, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114352021060374604
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -422,7 +440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 492b674ba6cfe49d98d50c87f413a826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mTank: {fileID: 0}
 --- !u!114 &114747692860086642
 MonoBehaviour:
   m_ObjectHideFlags: 1
