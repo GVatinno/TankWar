@@ -11,5 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd683c9e6f1acc4dbc30b348a06d958, type: 3}
   m_Name: TankData
   m_EditorClassIdentifier: 
+  mSlowingDownRadius: 1
+  mArrivalRadius: 0.08
+  mTankSpeedMax: 3
+  mTankAcceleration: 0.3
+  mAiTankSearchRadius: 30
   mMaxAimAngle: 30
-  mPowerMultiplier: 10
+  mPowerMultiplier: 15

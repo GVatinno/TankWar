@@ -16,11 +16,6 @@ public class Shell : MonoBehaviour {
 		mTrailRenderer = GetComponent<TrailRenderer> ();
     }
 
-	void Start () 
-	{
-		
-	}
-
 	public void Shoot(Vector3 position, Vector3 force, Tank owner, Tank target)
 	{
 		mOwner = owner;
@@ -64,7 +59,6 @@ public class Shell : MonoBehaviour {
         collisionPoint.y = mTarget.transform.position.y;
         Vector3 planeNormal = (mTarget.transform.position - mOwner.transform.position).normalized;
         float signedDistance =  Vector3.Dot(collisionPoint - mTarget.transform.position, planeNormal);
-        // TODO TEST IF IT'S EQUAL SQRDISTANCE SO NO NORMALIZATION
         return signedDistance;
     }
 

@@ -50,9 +50,10 @@ public class FollowTankCamera : MonoBehaviour {
         }
         return Vector3.zero;
     }
-	
-	void LateUpdate ()
+
+    void LateUpdate ()
     {
+        List<Tank> tanks = EnemyManager.Instance.GetAllEnemiesNotAlloc();
         Vector3 desiredPosition = GetTanksMidPoint() + mOffset;
         Vector3 position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * 0.8f);
         transform.position = position;

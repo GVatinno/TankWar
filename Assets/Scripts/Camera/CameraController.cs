@@ -6,31 +6,31 @@ using System;
 public class CameraController : SceneSingleton<CameraController>
 {
     private Camera mCamera = null;
-    private FollowTankCamera _mFollowTankCamera = null;
-    private TankShootingCamera _mTankShootingCameraBehaviour = null;
+    private FollowTankCamera mFollowTankCamera = null;
+    private TankShootingCamera mTankShootingCameraBehaviour = null;
 
     protected override void Init()
     {
         mCamera = Camera.main;
-        _mFollowTankCamera = mCamera.GetComponent<FollowTankCamera>();
-        _mTankShootingCameraBehaviour = mCamera.GetComponent<TankShootingCamera>();
+        mFollowTankCamera = mCamera.GetComponent<FollowTankCamera>();
+        mTankShootingCameraBehaviour = mCamera.GetComponent<TankShootingCamera>();
     }
 
     public void SetTankView(Tank tank, Action callback)
     {
-        _mFollowTankCamera.enabled = false;
-        _mTankShootingCameraBehaviour.SetTanks(tank, callback);
-        _mTankShootingCameraBehaviour.enabled = true;
+        mFollowTankCamera.enabled = false;
+        mTankShootingCameraBehaviour.SetTanks(tank, callback);
+        mTankShootingCameraBehaviour.enabled = true;
     }
 
     public void ResetCamera(Action callback)
     {
-        _mTankShootingCameraBehaviour.ResetCamera(_mFollowTankCamera.originalPosition, _mFollowTankCamera.originalRotation,
+        mTankShootingCameraBehaviour.ResetCamera(mFollowTankCamera.originalPosition, mFollowTankCamera.originalRotation,
             () =>
             {
-                _mTankShootingCameraBehaviour.enabled = false;
-                _mFollowTankCamera.ResetOriginalValues();
-                _mFollowTankCamera.enabled = true;
+                mTankShootingCameraBehaviour.enabled = false;
+                mFollowTankCamera.ResetOriginalValues();
+                mFollowTankCamera.enabled = true;
                 callback();
             });
     }
